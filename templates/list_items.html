@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f1f1;
+        }
+        header {
+            background-color: #8800ff;
+            color: white;
+            text-align: center;
+            padding: 15px 10px;
+            font-size: 28px;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        table th {
+            background-color: #007BFF;
+            color: white;
+        }
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        a.back {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            width: 150px;
+            background-color: #dc3545;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        a.back:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <header>Product List</header>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if items %}
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>Rs {{ item.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td><a href="{{ item.image_url }}" target="_blank">View Image</a></td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5">No products available.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    <!-- Corrected 'Back to Admin' button -->
+    <a href="{{ url_for('admin') }}" class="back">Back to Admin</a>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f1f1;
+        }
+
+        header {
+            background-color: #6200ff;
+            color: white;
+            padding: 15px;
+            font-size: 28px;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-buttons button {
+            padding: 10px 20px;
+            background-color: white;
+            color: #00b7ff;
+            border: 1px solid #00b7ff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .nav-buttons button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .form-box {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 30%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .form-box.add-item {
+            height: auto; /* Allow auto height for the Add Item section */
+        }
+
+        .form-box.restock-item {
+            height: 250px; /* Specific height for Restock Item section */
+        }
+
+        .form-box.delete-item {
+            height: 200px; /* Specific height for Delete Item section */
+        }
+
+        h2 {
+            color: #007BFF;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #007BFF;
+        }
+
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button.delete {
+            background-color: #dc3545;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button.delete:hover {
+            background-color: #c82333;
+        }
+
+        a.list-button, a.logout-button {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            width: 200px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        a.logout-button {
+            background-color: #dc3545;
+        }
+
+        a.list-button:hover {
+            background-color: #218838;
+        }
+
+        a.logout-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <span>Admin Panel - Inventory Manager</span>
+        <div class="nav-buttons">
+            <a href="{{ url_for('admin_list_items') }}" class="list-button">Inventory</a>
+            <a href="{{ url_for('admin_orders') }}" class="list-button">Orders</a>
+            <a href="{{ url_for('admin_suggestions') }}" class="list-button">Suggestions</a>
+
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Add Item Section -->
+        <div class="form-box add-item">
+            <h2>Add Item</h2>
+            <form method="POST">
+                <input type="hidden" name="action" value="add">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" step="0.01" required>
+                
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" required>
+                
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" required>
+                
+                <label for="image_url">Image URL:</label>
+                <input type="text" id="image_url" name="image_url">
+                
+                <button type="submit">Add Item</button>
+            </form>
+        </div>
+        
+
+        <!-- Restock Item Section -->
+        <div class="form-box restock-item">
+            <h2>Restock Item</h2>
+            <form method="POST" action="/admin">
+                <input type="hidden" name="action" value="restock">
+                <label>Product ID</label>
+                <input type="number" name="item_id" required>
+
+                <label>Restock Quantity</label>
+                <input type="number" name="quantity" min="1" required>
+
+                <button type="submit">Restock Product</button>
+            </form>
+        </div>
+
+        <!-- Delete Item Section -->
+        <div class="form-box delete-item">
+            <h2>Delete Item</h2>
+            <form method="POST" action="/admin">
+                <input type="hidden" name="action" value="delete">
+                <label>Product ID</label>
+                <input type="number" name="item_id" required>
+                <button type="submit" class="delete">Delete Product</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- List Items and Logout Buttons -->
+    <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+</body>
+</html>

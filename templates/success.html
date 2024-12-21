@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #28a745;
+            font-size: 36px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .order-details {
+            margin-top: 20px;
+            text-align: left;
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .item-info img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .item-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .order-total {
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            text-decoration: none;
+            padding: 10px 20px;
+            color: white;
+            background-color: #007BFF;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Order Successful!</h1>
+    <p>Thank you, {{ username }}. Your order was successful!</p>
+    <div class="order-details">
+        <h2>Order Summary</h2>
+        {% for item in cart %}
+        <div class="order-item">
+            <div class="item-info">
+                <img src="{{ item.image_url }}" alt="{{ item.name }}" onerror="this.src='https://via.placeholder.com/80';">
+                <div>
+                    <div class="item-name">{{ item.name }}</div>
+                    <div>Quantity: {{ item.quantity }}</div>
+                </div>
+            </div>
+            <div>₹{{ item.price * item.quantity }}</div>
+        </div>
+        {% endfor %}
+        <div class="order-total">Total: ₹{{ total }}</div>
+    </div>
+    <a href="{{ url_for('users') }}" class="back-button">Back to Shopping</a>
+</body>
+</html>
